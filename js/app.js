@@ -45,25 +45,42 @@ Products.prototype.renderSingleProduct = function(imgPosition, h2Position){
 //---------------------------------- Global Functions -----------------------------------------//
 
 function whichThreeProducts() {
+
+  let noRenderProduct =[leftProduct, centerProduct, rightProduct];
+   
+    while (noRenderProduct.includes(leftProduct)){
   let leftProductIndex = Math.floor(Math.random() * Products.allProducts.length);
   leftProduct = Products.allProducts[leftProductIndex]
 
-  let centerProductIndex = Math.floor(Math.random() * Products.allProducts.length);
-  centerProduct = Products.allProducts[centerProductIndex]
-    
-    while(centerProduct === null || centerProduct === leftProduct || centerProduct === rightProduct){
-      centerProductIndex = Math.floor(Math.random() * Products.allProducts.length);
-      centerProduct = Products.allProducts[centerProductIndex]
-    
     }
+  
+  //   while (noRenderProduct.includes(centerProduct)){
+  // let centerProductIndex = Math.floor(Math.random() * Products.allProducts.length);
+  // centerProduct = Products.allProducts[centerProductIndex]
 
-  let rightProductIndex = Math.floor(Math.random() * Products.allProducts.length)
-  rightProduct = Products.allProducts[rightProductIndex]
+  //   }
     
-    while(rightProduct === null || rightProduct === centerProduct || rightProduct === leftProduct){
-      rightProductIndex = Math.floor(Math.random() * Products.allProducts.length);
+  //   while (noRenderProduct.includes(rightProduct)){
+  // let rightProductIndex = Math.floor(Math.random() * Products.allProducts.length)
+  // rightProduct = Products.allProducts[rightProductIndex]
+
+  //   }
+
+  while(leftProduct === centerProduct || leftProduct === rightProduct || noRenderProduct.includes(leftProduct)){
+    leftProductIndex = Math.floor(Math.random() * Products.allProducts.length);
+    leftProduct = Products.allProducts[leftProductIndex]
+  }
+  
+  while(centerProduct === leftProduct || centerProduct === rightProduct || noRenderProduct.includes(centerProduct)){
+   let centerProductIndex = Math.floor(Math.random() * Products.allProducts.length);
+    centerProduct = Products.allProducts[centerProductIndex]
+  
+  }
+
+  while(rightProduct === centerProduct || rightProduct === leftProduct || noRenderProduct.includes(rightProduct)){
+    let rightProductIndex = Math.floor(Math.random() * Products.allProducts.length);
       rightProduct = Products.allProducts[rightProductIndex];
-    }
+  }
 
   leftProduct.renderSingleProduct(leftImgElem, leftH2Elem);
   centerProduct.renderSingleProduct(centerImgElem, centerH2Elem);
@@ -80,6 +97,100 @@ function renderProductResults(){
   }
 }
 
+function addMyChart(){
+  const productNamesArray = [];
+  const productVotesArray = [];
+  const productShownArray = [];
+
+  for (let product of Products.allProducts){
+    productNamesArray.push(product.name);
+    productVotesArray.push(product.votes);
+    productShownArray.push(product.timeshown);
+  }
+console.log(productNamesArray, productVotesArray, productShownArray);
+
+  
+
+  const ctx = document.getElementById('productChart').getContext('2d');
+  
+  const productChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: productNamesArray,
+        datasets: [{
+            label: '# of Votes',
+            data: productVotesArray,
+            backgroundColor: [
+                // 'rgba(255, 99, 132, 0.2)',
+                // 'rgba(54, 162, 235, 0.2)'
+                // 'rgba(255, 206, 86, 0.2)',
+                // 'rgba(75, 192, 192, 0.2)',
+                // 'rgba(153, 102, 255, 0.2)',
+                // 'rgba(255, 159, 64, 0.2)',
+                // 'rgba(255, 99, 132, 0.2)',
+                // 'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+            ],
+            borderColor: [
+                // 'rgba(255, 99, 132, 1)',
+                // 'rgba(54, 162, 235, 1)'
+                // 'rgba(255, 206, 86, 1)',
+                // 'rgba(75, 192, 192, 1)',
+                // 'rgba(153, 102, 255, 1)',
+                // 'rgba(255, 159, 64, 1)',
+                // 'rgba(255, 99, 132, 1)',
+                // 'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 2
+    }, {
+        label: '# of Times Shown',
+        data: productShownArray,
+        backgroundColor: [
+          // 'rgba(255, 99, 132, 0.2)',
+          // 'rgba(54, 162, 235, 0.2)'
+          // 'rgba(255, 99, 132, 0.2)',
+          // 'rgba(54, 162, 235, 0.2)',
+          // 'rgba(255, 99, 132, 0.2)',
+          // 'rgba(54, 162, 235, 0.2)',
+          // 'rgba(255, 99, 132, 0.2)',
+          // 'rgba(54, 162, 235, 0.2)',
+          // 'rgba(255, 99, 132, 0.2)',
+          // 'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)'
+          
+        ],
+        borderColor: [
+          // 'rgba(255, 99, 132, 1)',
+          // 'rgba(54, 162, 235, 1)'
+      //     'rgba(255, 99, 132, 1)',
+      //     'rgba(54, 162, 235, 1)',
+      //     'rgba(255, 99, 132, 1)',
+      //     'rgba(54, 162, 235, 1)',
+      //     'rgba(255, 99, 132, 1)',
+      //     'rgba(54, 162, 235, 1)',
+      //     'rgba(255, 99, 132, 1)',
+      //     'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)'
+       ],
+        borderWidth: 2
+    }]
+},
+    
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+}
 
 // --------------------------------------------- Event Creation -------------------------------//
 
@@ -96,17 +207,18 @@ function handleClick(event){
       leftProduct.votes++
       }
       whichThreeProducts();
-  } else{
-      alert("Please Choose A Product")
+  // } else{
+  //     alert("Please Choose A Product")
    
-    }
+  //   }
 
   if (voteCounter === 25){
     renderProductResults();
-
+    addMyChart();
     leftImgElem.removeEventListener('click', handleClick);
     rightImgElem.removeEventListener('click', handleClick);
     centerImgElem.removeEventListener('click', handleClick);
+    }
   }
 }
 
@@ -129,8 +241,6 @@ new Products('Baby Onesie Sweeeper', './img/sweep.png');
 new Products('Tuan Tuan Sleeping Bag', './img/tauntaun.jpg');
 new Products('Can of Unicorn Meate', './img/unicorn.jpg');
 new Products('Inverted Watering Can', './img/water-can.jpg');
-
-//----------------------------------Event Listener------------------------------//
 
 whichThreeProducts();
 
