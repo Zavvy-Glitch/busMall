@@ -17,14 +17,13 @@ let leftProduct = null;
 let rightProduct = null;
 let centerProduct = null;
 
-
 // ----------------------------------- Constructor Functions -------------------------------------//
 
-function Products(name, image) {
+function Products(name, image, timeshown, votes) {
   this.name = name;
   this.image = image;
-  this.timeshown = 0;
-  this.votes= 0;
+  this.timeshown = timeshown;
+  this.votes= votes;
 
   Products.allProducts.push(this);
 
@@ -41,47 +40,28 @@ Products.prototype.renderSingleProduct = function(imgPosition, h2Position){
 
 }
 
-
 //---------------------------------- Global Functions -----------------------------------------//
 
 function whichThreeProducts() {
 
   let noRenderProduct =[leftProduct, centerProduct, rightProduct];
-   
-    while (noRenderProduct.includes(leftProduct)){
+      while (noRenderProduct.includes(leftProduct)){
   let leftProductIndex = Math.floor(Math.random() * Products.allProducts.length);
   leftProduct = Products.allProducts[leftProductIndex]
 
     }
-  
-  //   while (noRenderProduct.includes(centerProduct)){
-  // let centerProductIndex = Math.floor(Math.random() * Products.allProducts.length);
-  // centerProduct = Products.allProducts[centerProductIndex]
-
-  //   }
-    
-  //   while (noRenderProduct.includes(rightProduct)){
-  // let rightProductIndex = Math.floor(Math.random() * Products.allProducts.length)
-  // rightProduct = Products.allProducts[rightProductIndex]
-
-  //   }
-
-  while(leftProduct === centerProduct || leftProduct === rightProduct || noRenderProduct.includes(leftProduct)){
+   while(leftProduct === centerProduct || leftProduct === rightProduct || noRenderProduct.includes(leftProduct)){
     leftProductIndex = Math.floor(Math.random() * Products.allProducts.length);
     leftProduct = Products.allProducts[leftProductIndex]
   }
-  
-  while(centerProduct === leftProduct || centerProduct === rightProduct || noRenderProduct.includes(centerProduct)){
+    while(centerProduct === leftProduct || centerProduct === rightProduct || noRenderProduct.includes(centerProduct)){
    let centerProductIndex = Math.floor(Math.random() * Products.allProducts.length);
     centerProduct = Products.allProducts[centerProductIndex]
-  
-  }
-
+    }
   while(rightProduct === centerProduct || rightProduct === leftProduct || noRenderProduct.includes(rightProduct)){
     let rightProductIndex = Math.floor(Math.random() * Products.allProducts.length);
       rightProduct = Products.allProducts[rightProductIndex];
   }
-
   leftProduct.renderSingleProduct(leftImgElem, leftH2Elem);
   centerProduct.renderSingleProduct(centerImgElem, centerH2Elem);
   rightProduct.renderSingleProduct(rightImgElem, rightH2Elem);
@@ -122,7 +102,7 @@ console.log(productNamesArray, productVotesArray, productShownArray);
             data: productVotesArray,
             backgroundColor: [
                 // 'rgba(255, 99, 132, 0.2)',
-                // 'rgba(54, 162, 235, 0.2)'
+                // 'rgba(54, 162, 235, 0.2)',
                 // 'rgba(255, 206, 86, 0.2)',
                 // 'rgba(75, 192, 192, 0.2)',
                 // 'rgba(153, 102, 255, 0.2)',
@@ -134,7 +114,7 @@ console.log(productNamesArray, productVotesArray, productShownArray);
             ],
             borderColor: [
                 // 'rgba(255, 99, 132, 1)',
-                // 'rgba(54, 162, 235, 1)'
+                // 'rgba(54, 162, 235, 1)',
                 // 'rgba(255, 206, 86, 1)',
                 // 'rgba(75, 192, 192, 1)',
                 // 'rgba(153, 102, 255, 1)',
@@ -150,7 +130,7 @@ console.log(productNamesArray, productVotesArray, productShownArray);
         data: productShownArray,
         backgroundColor: [
           // 'rgba(255, 99, 132, 0.2)',
-          // 'rgba(54, 162, 235, 0.2)'
+          // 'rgba(54, 162, 235, 0.2)',
           // 'rgba(255, 99, 132, 0.2)',
           // 'rgba(54, 162, 235, 0.2)',
           // 'rgba(255, 99, 132, 0.2)',
@@ -165,15 +145,15 @@ console.log(productNamesArray, productVotesArray, productShownArray);
         ],
         borderColor: [
           // 'rgba(255, 99, 132, 1)',
-          // 'rgba(54, 162, 235, 1)'
-      //     'rgba(255, 99, 132, 1)',
-      //     'rgba(54, 162, 235, 1)',
-      //     'rgba(255, 99, 132, 1)',
-      //     'rgba(54, 162, 235, 1)',
-      //     'rgba(255, 99, 132, 1)',
-      //     'rgba(54, 162, 235, 1)',
-      //     'rgba(255, 99, 132, 1)',
-      //     'rgba(54, 162, 235, 1)',
+          // 'rgba(54, 162, 235, 1)',
+          // 'rgba(255, 99, 132, 1)',
+          // 'rgba(54, 162, 235, 1)',
+          // 'rgba(255, 99, 132, 1)',
+          // 'rgba(54, 162, 235, 1)',
+          // 'rgba(255, 99, 132, 1)',
+          // 'rgba(54, 162, 235, 1)',
+          // 'rgba(255, 99, 132, 1)',
+          // 'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
           'rgba(75, 192, 192, 1)'
        ],
@@ -220,28 +200,60 @@ function handleClick(event){
     centerImgElem.removeEventListener('click', handleClick);
     }
   }
+  storeClicks();
+}
+
+function storeClicks(){
+  console.log(Products.allProducts);
+  let stringProducts = JSON.stringify(Products.allProducts);
+  console.log(stringProducts)
+  localStorage.setItem('products', stringProducts);
+  console.log(JSON.parse(stringProducts))
+}
+
+function getClicks(){
+  let potentialClicks = localStorage.getItem('products');
+  if (potentialClicks){
+    console.log(potentialClicks);
+    let parsedProducts = JSON.parse(potentialClicks);
+      for (let product of parsedProducts){
+        console.log(parsedProducts);
+        let name = product.name;
+        let image = product.image;
+        let timeshown = product.timeshown;
+        let votes = product.votes;
+
+        new Products(name, image, timeshown, votes);
+
+      }
+      
+
+  }
 }
 
 //--------------------------- Call Functions-----------------------------------//
-new Products('R2D2 Luggage', './img/bag.jpg');
-new Products('Banana Slicer', './img/banana.jpg');
-new Products('Tablet/Toilet Paper Roll Combo Stand', './img/bathroom.jpg');
-new Products('Open Toed Rain Boots', './img/boots.jpg');
-new Products('All in One Breakfast Warmer', './img/breakfast.jpg');
-new Products('Meatball BubbleGum', './img/bubblegum.jpg');
-new Products('Inverted Chair', './img/chair.jpg');
-new Products('Cthulu Figurine', './img/cthulhu.jpg');
-new Products('Ducky Doggy Muzzle', './img/dog-duck.jpg');
-new Products('Can of Dragon Meat', './img/dragon.jpg');
-new Products('Utensil Pens', './img/pen.jpg');
-new Products('Pet Mop/Duster Boots', './img/pet-sweep.jpg');
-new Products('Pizza Scissor Slicer', './img/scissors.jpg');
-new Products('Shark Sleeping Bag', './img/shark.jpg');
-new Products('Baby Onesie Sweeeper', './img/sweep.png');
-new Products('Tuan Tuan Sleeping Bag', './img/tauntaun.jpg');
-new Products('Can of Unicorn Meate', './img/unicorn.jpg');
-new Products('Inverted Watering Can', './img/water-can.jpg');
+getClicks();
+
+if (Products.allProducts.length < 1){
+
+new Products('R2D2 Luggage', './img/bag.jpg', 0, 0);
+new Products('Banana Slicer', './img/banana.jpg', 0, 0);
+new Products('Tablet/Toilet Paper Roll Combo Stand', './img/bathroom.jpg', 0, 0);
+new Products('Open Toed Rain Boots', './img/boots.jpg', 0, 0);
+new Products('All in One Breakfast Warmer', './img/breakfast.jpg', 0, 0);
+new Products('Meatball BubbleGum', './img/bubblegum.jpg', 0, 0);
+new Products('Inverted Chair', './img/chair.jpg', 0, 0);
+new Products('Cthulu Figurine', './img/cthulhu.jpg', 0, 0);
+new Products('Ducky Doggy Muzzle', './img/dog-duck.jpg', 0, 0);
+new Products('Can of Dragon Meat', './img/dragon.jpg', 0, 0);
+new Products('Utensil Pens', './img/pen.jpg', 0, 0);
+new Products('Pet Mop/Duster Boots', './img/pet-sweep.jpg', 0, 0);
+new Products('Pizza Scissor Slicer', './img/scissors.jpg', 0, 0);
+new Products('Shark Sleeping Bag', './img/shark.jpg', 0, 0);
+new Products('Baby Onesie Sweeeper', './img/sweep.png', 0, 0);
+new Products('Tuan Tuan Sleeping Bag', './img/tauntaun.jpg', 0, 0);
+new Products('Can of Unicorn Meate', './img/unicorn.jpg', 0, 0);
+new Products('Inverted Watering Can', './img/water-can.jpg', 0, 0);
+}
 
 whichThreeProducts();
-
-
