@@ -1,12 +1,58 @@
+body{
+  background-color: rgb(149, 142, 140);
+}
 
+nav{
+  display:flex;
+  justify-self: center;
+  justify-content: center;
+  
+}
+nav ul li{
+  border-style: solid black 3px;
+  display:inline-flex;
+  justify-content:space-evenly;
+  padding:50px;
+   
+}
+#Products{
+  display:flex;
+  justify-content:space-evenly;
+  
+}
 
+#left_product_img{
+  height:auto;overflow:scroll;max-height:200px
+}
 
+#center_product_img{
+  height:auto;overflow:scroll;max-height:200px
+}
 
+#right_product_img{
+  height:auto;overflow:scroll;max-height:200px
+}
+
+h1{
+  display:flex;
+  background-color: seashell;
+  justify-content:center;
+  border-style: groove;
+  border-radius: 50%;
+  color:red
+  
+}
+
+#ChartsSection{
+  display: flex;
+  justify-items: center;
+}
 
 
 
 #chartSize{
-  height:800px;
-  width:800px;
+  display:inline;
+  height:600px;
+  width:600px;
 
 }
