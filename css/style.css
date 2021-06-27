@@ -46,13 +46,15 @@ h1{
 #ChartsSection{
   display: flex;
   justify-items: center;
+  color:sienna;
 }
 
 
 
 #chartSize{
   display:inline;
-  height:600px;
-  width:600px;
-
+  padding-left: 20%;
+  height:800px;
+  width:800px;
+  
 }
